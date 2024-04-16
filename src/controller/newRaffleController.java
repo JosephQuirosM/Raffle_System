@@ -7,6 +7,7 @@ import classes.DatabaseConnector;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -52,9 +53,8 @@ public class newRaffleController implements Initializable {
     @FXML
     private void CreateRaffle(ActionEvent event) throws IOException{
         
-        if(true){
+        if(true){ 
             sendDataToDB();
-            backToMenu();
             return;
         }
         
@@ -70,22 +70,35 @@ public class newRaffleController implements Initializable {
         App.loadScene(scene);
     }
     
-    private void sendDataToDB(){
+    private void sendDataToDB() throws IOException{
+        int wasCreated = 0;
+        
         try(Connection conn = DatabaseConnector.getConnection()){
-            try(CallableStatement agregarRifa = conn.prepareCall("{call Insertar_Rifa(?, ?, ?, ?, ?)}")){
+            try(CallableStatement agregarRifa = conn.prepareCall("{call Insertar_Rifa(?, ?, ?, ?, ?, ?)}")){
                 agregarRifa.setString(1, tfldDescription.getText());
                 agregarRifa.setString(2, tfldPrize.getText());
                 agregarRifa.setInt(3, Integer.parseInt(tfldPrice.getText()));
                 agregarRifa.setString(4, datepckInitDate.getValue().toString());
                 agregarRifa.setInt(5, Integer.parseInt(tfldTotalNums.getText()));
+                agregarRifa.registerOutParameter(6, Types.NUMERIC);
                 agregarRifa.execute();
+                
+                wasCreated = agregarRifa.getInt(6);
             }
         }
         
         catch(SQLException e){
             e.printStackTrace();
         }
+        
+        if(wasCreated == 1){
+            backToMenu();
+            return;
+        }
+        
+        tfldDescription.setText("");  
     }
+    
 }
 
 

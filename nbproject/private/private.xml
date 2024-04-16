@@ -5,6 +5,9 @@
         <group>
             <file>file:/G:/ProyectosJava/raffle/Raffle_System/src/controller/mainController.java</file>
             <file>file:/G:/ProyectosJava/raffle/Raffle_System/src/controller/newRaffleController.java</file>
+            <file>file:/G:/ProyectosJava/raffle/Raffle_System/src/controller/openRaffleController.java</file>
+            <file>file:/G:/ProyectosJava/raffle/Raffle_System/src/fxml/main.fxml</file>
+            <file>file:/G:/ProyectosJava/raffle/Raffle_System/src/classes/Raffle.java</file>
         </group>
     </open-files>
 </project-private>

@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Raffle_System.jar" size="8057" download="eager" />
+    <jar href="Raffle_System.jar" size="13101" download="eager" />
     <jar href="lib\ojdbc8.jar" size="5155746" download="eager" />
   </resources>
   <jfx:javafx-desc  width="800" height="600" main-class="app.App"  name="Raffle_System" />

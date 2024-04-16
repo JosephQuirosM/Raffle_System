@@ -1,27 +1,42 @@
 package classes;
 
-import java.time.LocalDate;
-
-public class Raffle
-{
-    // attributes
-   private String description;
+public class Raffle {
+    private int id;
+    private String description;
     private String prize;
     private int price;
-    private LocalDate date;
-    private int totalNums;
-  
-    //Constructors
-    public Raffle(String description, String prize, int price, LocalDate date, int totalNums) {
+    private String date;
+    private int numbers;
+
+    public Raffle(int id,String description, String prize, int price, String date, int numbers) {
+        this.id = id;
         this.description = description;
         this.prize = prize;
         this.price = price;
         this.date = date;
-        this.totalNums = totalNums;
+        this.numbers = numbers;
     }
-    //public methods
-    
-    //private methods
 
+    public String getDescription() {
+        return description;
+    }
+
+    public String getPrize() {
+        return prize;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public int getNumbers() {
+        return numbers;
+    }
+    
+    
     
 }
