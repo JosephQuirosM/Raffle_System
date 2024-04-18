@@ -18,6 +18,7 @@ public class App extends Application {
         stg = new Stage();
         stg.initStyle(StageStyle.UNDECORATED);
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
+        stg.centerOnScreen();
         Scene scene  = new Scene(root);
         loadScene(scene);
         

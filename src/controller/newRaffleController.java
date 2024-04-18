@@ -51,7 +51,7 @@ public class newRaffleController implements Initializable {
     }
 
     @FXML
-    private void CreateRaffle(ActionEvent event) throws IOException{
+    private void CreateRaffle(ActionEvent event) throws IOException {
         
         if(true){ 
             sendDataToDB();
