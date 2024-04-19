@@ -19,8 +19,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -31,11 +31,11 @@ import oracle.jdbc.OracleTypes;
 public class openRaffleController implements Initializable {
 
     ArrayList <Button> auxList = new ArrayList<>();
-    
+
     public static ArrayList<String> selectedNumbers = new ArrayList<>();
     
     @FXML
-    private AnchorPane btnBack;
+    private Button btnBack;
     @FXML
     private GridPane gpButtonArray;
     @FXML
@@ -46,11 +46,17 @@ public class openRaffleController implements Initializable {
     private Label lblDate;
     @FXML
     private Label lblPrize;
+    @FXML
+    private Button btnContinue;
+    @FXML
+    private CheckBox checkBox;
+    @FXML
+    private Button btnWinner;
 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        btnContinue.setVisible(false);
         fillLabels();
         fillButtonArray(mainController.actualRaffle.getNumbers());
         loadStateOfButtons();
@@ -106,8 +112,13 @@ public class openRaffleController implements Initializable {
     
     private void actionOfNumber(ActionEvent event){
         Button selectedButton = (Button) event.getSource();
-        selectedNumbers.add(selectedButton.getText());
         
+        if(checkBox.isSelected()){
+        addToArray(selectedButton);
+        return;
+        }
+        
+        selectedNumbers.add(selectedButton.getText());
         loadBuyNumberInterface();
     }
       
@@ -170,5 +181,60 @@ public class openRaffleController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(openRaffleController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @FXML
+    private void multipleSelect(ActionEvent event) {
+        boolean state = checkBox.isSelected();
+        
+        if(state){
+           btnContinue.setVisible(true);
+           return;
+        }
+        
+        btnContinue.setVisible(false);
+        fillButtonArray(mainController.actualRaffle.getNumbers());
+        loadStateOfButtons();
+        selectedNumbers.clear();
+    }
+
+    @FXML
+    private void multipleBuy(ActionEvent event) {
+        
+        if(selectedNumbers.size() >= 1){
+            loadBuyNumberInterface();
+        }
+    }
+    
+    private void addToArray(Button b){
+        int size = selectedNumbers.size();
+        int space = 0;
+        String number = b.getText();
+        String style =b.getStyle();
+        boolean addToArray = true;
+        
+        for (int i = 0; i < size; i++){
+            if(selectedNumbers.get(i).equals(number)){
+                addToArray = false;
+                space = i;
+                break;
+            }
+        }
+        
+        if(addToArray){
+            b.setStyle(style + "-fx-text-fill: white;");
+            selectedNumbers.add(number);
+            return;
+        }
+        
+        b.setStyle(style + "-fx-text-fill: black;");
+        selectedNumbers.remove(space);
+    }
+
+    @FXML
+    private void openWinnerRaffle(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/winnerRaffle.fxml"));
+        Scene scene  = new Scene(root);
+        App.loadScene(scene);
     }
 }

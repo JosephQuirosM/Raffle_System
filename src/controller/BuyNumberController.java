@@ -18,7 +18,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
@@ -45,7 +44,8 @@ public class BuyNumberController implements Initializable {
 
   @Override
     public void initialize(URL url, ResourceBundle rb) {
-        lblNumbers.setText(openRaffleController.selectedNumbers.get(0));
+        
+       initLbl();
         loadMenuBar();
     }    
 
@@ -112,10 +112,13 @@ public class BuyNumberController implements Initializable {
 
     @FXML
     private void saveNumberData(ActionEvent event) {
+        int size = openRaffleController.selectedNumbers.size();
+        
+        for(int i = 0; i < size;i++){
          try (Connection conn = DatabaseConnector.getConnection()) {
                 try (CallableStatement methodDB = conn.prepareCall("{call Guardar_Estado(?, ?, ?, ?)}")) {
                     methodDB.setInt(1, mainController.actualRaffle.getId());
-                    methodDB.setInt(2,Integer.parseInt(openRaffleController.selectedNumbers.get(0)));
+                    methodDB.setInt(2,Integer.parseInt(openRaffleController.selectedNumbers.get(i)));
                     methodDB.setInt(3, convertMenuBarText());
                     methodDB.setString(4, tfldOwner.getText());
                     methodDB.execute();
@@ -123,6 +126,7 @@ public class BuyNumberController implements Initializable {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        }
          backToRaffle(event);
     }
     
@@ -140,5 +144,16 @@ public class BuyNumberController implements Initializable {
         return 3;
     }
     
-    
+    private void initLbl(){
+        int size = openRaffleController.selectedNumbers.size();
+        lblNumbers.setText(openRaffleController.selectedNumbers.get(0));
+        
+        for(int i = 1; i < size - 1 ; i++){
+             lblNumbers.setText(lblNumbers.getText() +", "+ openRaffleController.selectedNumbers.get(i));
+        }
+        
+        if(size >= 2){
+            lblNumbers.setText(lblNumbers.getText() + ", " + openRaffleController.selectedNumbers.get(size - 1) );
+        }
+    }
 }
